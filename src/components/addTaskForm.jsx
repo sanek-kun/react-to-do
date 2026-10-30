@@ -5,6 +5,8 @@ import Button from "./button"
 const AddTaskForm = (props) => {
   const {
     addTask, 
+    newTaskTitle,
+    setNewTaskTitle,
   } = props
 
   const onSubmit = (event) => {
@@ -18,6 +20,8 @@ const AddTaskForm = (props) => {
         label="New task title"
         id="search-task"
         type="search"
+        value={newTaskTitle}
+        onInput={(event) => {setNewTaskTitle(event.target.value)}}
         />
         <Button type="submit">Add</Button>
       </form>

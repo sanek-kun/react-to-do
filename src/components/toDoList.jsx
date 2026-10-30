@@ -19,8 +19,8 @@ const ToDoList = (props) => {
         {tasks.map((task) => (
           <ToDoItem
           className = "todo_item"
-          id = {task.Id}
-          key= {task.Id}
+          id = {task.id}
+          key= {task.id}
           title = {task.title}
           isDone= {task.isDone}
           onDeleteTaskButtonClick={onDeleteTaskButtonClick}
