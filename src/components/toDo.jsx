@@ -1,15 +1,25 @@
-import { useState } from "react"
+import { useState , useEffect } from "react"
 import AddTaskForm from "./addTaskForm"
 import SearchTaskFrom from "./searchTaskForm"
 import ToDoInfo from "./toDoInfo"
 import ToDoList from "./toDoList"
+import { use } from "react"
 
 const ToDo = () => {
 
-  const [tasks , setTasks] = useState([
-    {id: 'task-1' , title: 'Buy milk' , isDone: false },
-    {id: 'task-2' , title: 'Learn math' , isDone: true },
-  ])
+  const [tasks , setTasks] = useState(() => {
+    const savedTasks = localStorage.getItem('tasks')
+
+    if(savedTasks){
+      return JSON.parse(savedTasks)
+    }
+
+    return [
+      {id: 'task-1' , title: 'Buy milk' , isDone: false },
+      {id: 'task-2' , title: 'Learn math' , isDone: true },
+    ]
+  })
+  const [searchQuery , setSearchQuery ] = useState('')
 
   const [newTaskTitle , setNewTaskTitle] = useState('')
 
@@ -38,10 +48,6 @@ const ToDo = () => {
   )
   }
 
-  const filtertasks = (text) => {
-    console.log(`filter ${text}`)
-  } 
-
   const addTask = () => {
     if(newTaskTitle.trim().length > 0){
       const newtask = {
@@ -52,20 +58,39 @@ const ToDo = () => {
 
       setTasks([...tasks , newtask])
       setNewTaskTitle('')
+      setSearchQuery('')
     }
   }
+
+  useEffect(() => {
+    localStorage.setItem('tasks' , JSON.stringify(tasks))
+  }, [tasks])
+
+  const clearSearchQuery = searchQuery.trim().toLowerCase()
+  const filteredTasks= clearSearchQuery.length > 0 
+  ? tasks.filter(({title}) => title.toLowerCase().includes(clearSearchQuery))
+  : null
 
   return (
     <div className="todo">
       <h1 className="todo__title">To Do List</h1>
-      <AddTaskForm addTask={addTask} newTaskTitle={newTaskTitle} setNewTaskTitle={setNewTaskTitle}/>
-      <SearchTaskFrom onSearchInput={filtertasks}/>
+      <AddTaskForm 
+      addTask={addTask} 
+      newTaskTitle={newTaskTitle} 
+      setNewTaskTitle={setNewTaskTitle}
+      />
+      <SearchTaskFrom 
+      searchQuery={searchQuery}
+      setSearchQuery={setSearchQuery}
+      />
       <ToDoInfo
       total={tasks.length}
       done={tasks.filter((task) => task.isDone).length}
       onDeleteAllButtonClick={deleterAllTasks}
       />
-      <ToDoList tasks={tasks}
+      <ToDoList 
+      tasks={tasks}
+      filteredTasks={filteredTasks}
       onDeleteTaskButtonClick={deletTask}
       onTaskCompleteChange={toggleTaskComplet}
       />
