@@ -1,3 +1,5 @@
+import { memo } from "react"
+
 const ToDoInfo = (props) => {
     const {
         total,
@@ -6,14 +8,20 @@ const ToDoInfo = (props) => {
     } = props
 
     const hasTasks = total > 0
+
+    console.log("ToDoInfo")
     return (
         <div className="todo__info">
             <div className="todo__total-tasks">Done {done} from {total}</div>
             {hasTasks && (
-                <button className="todo__delete-all-button" type="button" onClick={onDeleteAllButtonClick}>Delete all</button>
+                <button
+                className="todo__delete-all-button" 
+                type="button" 
+                onClick={onDeleteAllButtonClick} 
+                >Delete all</button>
             )}
         </div>
     )
 }
 
-export default ToDoInfo
+export default memo(ToDoInfo)

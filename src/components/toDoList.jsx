@@ -1,4 +1,5 @@
 import ToDoItem from "./toDoItem"
+import { memo } from "react"
 const ToDoList = (props) => {
     const {
       tasks = [],
@@ -10,6 +11,7 @@ const ToDoList = (props) => {
     } = props
     const hasTasks = tasks.length > 0
     const isEmptyFilteredTasks = filteredTasks?.length === 0
+    console.log("ToDoList")
 
     if(!hasTasks){
         return (
@@ -43,4 +45,4 @@ const ToDoList = (props) => {
     
 }
 
-export default ToDoList
+export default memo(ToDoList)

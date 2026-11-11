@@ -1,3 +1,5 @@
+import { memo } from "react"
+
 const ToDoItem = (props) => {
   const {
     className = "",
@@ -8,6 +10,8 @@ const ToDoItem = (props) => {
     onDeleteTaskButtonClick,
     onTaskCompleteChange,
   } = props
+
+  console.log("TpDoItem")
     return (
         <li className={`todo-item ${className}`} ref={taskRef}>
           <input
@@ -50,4 +54,4 @@ const ToDoItem = (props) => {
 }
 
 
-export default ToDoItem
+export default memo(ToDoItem)
